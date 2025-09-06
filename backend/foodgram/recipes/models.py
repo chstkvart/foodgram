@@ -5,10 +5,12 @@ from users.models import User
 
 class Ingredient(models.Model):
     name = models.CharField(
-        verbose_name='Название'
+        verbose_name='Название',
+        max_length=200
     )
     measurement_unit = models.CharField(
-        verbose_name='Единица измерения'
+        verbose_name='Единица измерения',
+        max_length=50
     )
 
     class Meta:
@@ -21,11 +23,13 @@ class Ingredient(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(
-        verbose_name='Название'
+        verbose_name='Название',
+        max_length=200
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name='Уникальный слаг'
+        verbose_name='Уникальный слаг',
+        max_length=200
     )
 
     class Meta:

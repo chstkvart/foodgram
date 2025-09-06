@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'drf_yasg',
     'rest_framework',
     'api.apps.ApiConfig',
@@ -81,6 +82,13 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', 5432)
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -140,7 +148,12 @@ SWAGGER_SETTINGS = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media'
 
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
+
 AUTHENTICATION_BACKENDS = [
+    'api.emailauth.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -148,9 +161,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
@@ -160,15 +173,17 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'USERNAME_FIELD': 'email',
+    # 'USERNAME_FIELD': 'email',
     'SEND_ACTIVATION_EMAIL': False,
+    'TOKEN_MODEL': 'rest_framework.authtoken.models.Token',
     'SERIALIZERS': {
         'user_create': 'api.serializers.UserCreateSerializer',
         'user': 'api.serializers.UserSerializer',
         'user_list': 'api.serializers.UsersSerializer',
         'current_user': 'api.serializers.UserSerializer',
         'password_change': 'api.serializers.PasswordChangeSerializer',
-        'token_create': 'api.serializers.TokenSerializer',
+        'token_create': 'djoser.serializers.TokenCreateSerializer',
+        # 'token_create': 'api.serializers.TokenSerializer',
     },
     'HIDE_USERS': False,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
@@ -176,5 +191,7 @@ DJOSER = {
         'current_user': ['rest_framework.permissions.IsAuthenticated'],
         'user': ['rest_framework.permissions.AllowAny'],
         'user_list': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+        'token_create': ['rest_framework.permissions.AllowAny'],
+        'token_destroy': ['rest_framework.permissions.IsAuthenticated'],
     }
 }

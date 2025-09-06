@@ -5,7 +5,7 @@ from users.models import Follow, User
 from recipes.models import Recipe, Tag, Ingredient, Favorite, ShoppingCart
 from .serializers import (
     UsersSerializer, UserCreateSerializer, UserSerializer, PasswordChangeSerializer,
-    TokenSerializer, TagSerializer, IngredientSerializer, RecipeSerializer,
+     TagSerializer, IngredientSerializer, RecipeSerializer,
     RecipeCreateUpdateSerializer, RecipeShortLinkSerializer, ShoppingCartDownloadSerializer,
     ShoppingCartAddSerializer, ShoppingCartRemoveSerializer, FavoriteSerializer,
     FavoriteDeleteSerializer, FollowSerializer, Base64ImageField
@@ -165,9 +165,9 @@ class UserViewSet(viewsets.ModelViewSet):
             follow.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-class TokenViewSet(TokenCreateView):
-    serializer_class = TokenSerializer
-    permission_classes = [permissions.AllowAny]
+# class TokenViewSet(TokenCreateView):
+#     serializer_class = TokenSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):

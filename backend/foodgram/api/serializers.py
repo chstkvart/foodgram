@@ -133,22 +133,34 @@ class PasswordChangeSerializer(serializers.Serializer):
         return user
 
 
-class TokenSerializer(TokenCreateSerializer):
-    """Получение токена авторизации."""
+# class TokenSerializer(TokenCreateSerializer):
+#     """Получение токена авторизации."""
 
-    password = serializers.CharField(write_only=True)
-    email = serializers.EmailField(write_only=True)
+#     password = serializers.CharField(write_only=True)
+#     email = serializers.EmailField(write_only=True)
 
-    def validate(self, data):
-        user = authenticate(
-            request=self.context.get("request"),
-            email=data.get("email"),
-            password=data.get("password")
-        )
-        if not user:
-            raise serializers.ValidationError("Неверный email или пароль")
-        data["user"] = user
-        return data
+#     def validate(self, data):
+#         user = authenticate(
+#             request=self.context.get("request"),
+#             username=data.get("email"),
+#             password=data.get("password")
+#         )
+#         if not user:
+#             raise serializers.ValidationError("Неверный email или пароль")
+        
+#         # Создаем или получаем токен
+#         token, created = Token.objects.get_or_create(user=user)
+#         data["auth_token"] = token.key
+#         data["user"] = user
+#         return data
+
+#     def to_representation(self, instance):
+#         # Возвращаем токен в ответе
+#         return {
+#             "auth_token": instance["auth_token"],
+#             "user_id": instance["user"].id,
+#             "email": instance["user"].email
+#         }
 
 
 class TagSerializer(serializers.ModelSerializer):
