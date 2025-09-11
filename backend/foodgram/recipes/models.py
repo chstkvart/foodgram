@@ -39,7 +39,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-
+import shortuuid
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
@@ -73,13 +73,31 @@ class Recipe(models.Model):
         verbose_name='Время приготовления в минутах',
         validators=[MinValueValidator(1)]
     )
+    short_hash = models.CharField(
+        max_length=10,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name='Короткий хеш для ссылки'
+    )
 
     class Meta:
         verbose_name='Рецепт'
         verbose_name_plural='Рецепты'
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.short_hash:
+            self.short_hash = self.generate_short_hash()
+        super().save(*args, **kwargs)
+    
+    def generate_short_hash(self):
+        return shortuuid.ShortUUID().random(length=7)
+
+    
 
 
 class RecipeIngredients(models.Model):
@@ -122,6 +140,11 @@ class Favorite(models.Model):
         on_delete=models.CASCADE,
         related_name='favorites'
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'recipe'], name='unique_favorite')
+        ]
 
 
 class ShoppingCart(models.Model):

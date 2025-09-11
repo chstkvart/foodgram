@@ -17,6 +17,7 @@ services:
     volumes:
       - static:/static
       - media:/media
+      - ./data:/app/data
     depends_on:
       - db
   frontend:

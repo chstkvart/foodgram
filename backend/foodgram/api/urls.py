@@ -6,16 +6,17 @@ from .views import (
 )
 
 router = routers.DefaultRouter()
-# router.register('custom-users', UserViewSet, basename='custom-users')
+router.register('users', UserViewSet, basename='users')
 # router.register('tokens', TokenViewSet, basename='tokens')
-router.register('tags', TagViewSet, basename='tags')
 router.register('recipes', RecipeViewSet, basename='recipes')
+router.register('tags', TagViewSet, basename='tags')
 router.register('ingredients', IngredientViewSet, basename='ingredients')
 app_name = 'api'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('', include('djoser.urls')),
+    # path('', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
+    # path('s/<str:short_hash>/', RecipeViewSet.as_view({'get': 'redirect_short_link'}), name='recipe-short-link')
 
 ]
