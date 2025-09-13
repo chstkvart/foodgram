@@ -1,0 +1,42 @@
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./backend/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
+  backend:
+    image: andos12/foodgram_backend:latest
+    env_file: .env
+    command: sh -c "python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:7000 foodgram.wsgi"
+    volumes:
+      - static:/static
+      - media:/media
+      - ./data:/app/data
+    depends_on:
+      - db
+
+  frontend:
+    env_file: .env
+    image: andos12/foodgram_frontend:latest
+    command: cp -r /app/build/. /static/
+    volumes:
+      - static:/static
+
+  nginx:
+    image: andos12/foodgram_nginx:latest
+    env_file: .env
+    volumes:
+      - static:/static
+      - media:/media
+    ports:
+      - 7000:80
+    depends_on:
+      - backend
+      - frontend
