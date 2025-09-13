@@ -105,7 +105,6 @@ class UserViewSet(viewsets.ModelViewSet):
         url_path='set_password'
     )
     def set_password(self, request):
-        user = request.user
         serializer = PasswordChangeSerializer(
             data=request.data,
             context={'request': request}
