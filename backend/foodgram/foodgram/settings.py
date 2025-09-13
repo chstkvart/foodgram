@@ -168,9 +168,6 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
@@ -180,7 +177,6 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    # 'USERNAME_FIELD': 'email',
     'SEND_ACTIVATION_EMAIL': False,
     'TOKEN_MODEL': 'rest_framework.authtoken.models.Token',
     'SERIALIZERS': {
@@ -190,7 +186,6 @@ DJOSER = {
         'current_user': 'api.serializers.UserSerializer',
         'password_change': 'api.serializers.PasswordChangeSerializer',
         'token_create': 'djoser.serializers.TokenCreateSerializer',
-        # 'token_create': 'api.serializers.TokenSerializer',
     },
     'HIDE_USERS': False,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,

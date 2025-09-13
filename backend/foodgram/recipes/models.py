@@ -1,5 +1,8 @@
+import shortuuid
+
 from django.core.validators import MinValueValidator
 from django.db import models
+
 from users.models import User
 
 
@@ -14,8 +17,8 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name='Ингредиент'
-        verbose_name_plural='Ингредиенты'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
         return self.name
@@ -33,13 +36,13 @@ class Tag(models.Model):
     )
 
     class Meta:
-        verbose_name='Тег'
-        verbose_name_plural='Теги'
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
 
     def __str__(self):
         return self.name
 
-import shortuuid
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
@@ -82,22 +85,20 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        verbose_name='Рецепт'
-        verbose_name_plural='Рецепты'
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
         ordering = ['-id']
 
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         if not self.short_hash:
             self.short_hash = self.generate_short_hash()
         super().save(*args, **kwargs)
-    
-    def generate_short_hash(self):
-        return shortuuid.ShortUUID().random(length=7)
 
-    
+    def generate_short_hash(self):
+        return shortuuid.ShortUUID().random(length=7)    
 
 
 class RecipeIngredients(models.Model):
@@ -127,8 +128,6 @@ class RecipeIngredients(models.Model):
 
 
 class Favorite(models.Model):
-    """Модель избранных рецептов."""
-
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -143,13 +142,13 @@ class Favorite(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'], name='unique_favorite')
+            models.UniqueConstraint(
+                fields=['user', 'recipe'], name='unique_favorite'
+            )
         ]
 
 
 class ShoppingCart(models.Model):
-    """Модель корзины."""
-
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

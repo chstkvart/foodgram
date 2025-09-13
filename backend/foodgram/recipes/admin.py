@@ -1,8 +1,15 @@
 from django.contrib import admin
-from .models import (
-    Ingredient, Tag, Recipe, RecipeIngredients,
-    Favorite, ShoppingCart)
-from users.models import User, Follow
+
+from recipes.models import (
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredients,
+    ShoppingCart,
+    Tag
+)
+from users.models import Follow, User
+
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
@@ -26,20 +33,33 @@ class RecipeAdmin(admin.ModelAdmin):
     search_fields = ('name', 'author__username')
     list_filter = ('tags',)
     readonly_fields = ('get_favorites_count_display',)
-    fields = ['name', 'author', 'get_favorites_count_display', 'image', 'text', 'ingredients', 'tags', 'cooking_time']
+    fields = [
+        'name',
+        'author',
+        'get_favorites_count_display',
+        'image',
+        'text',
+        'ingredients',
+        'tags',
+        'cooking_time'
+    ]
     filter_horizontal = ['tags']
-    
 
     def get_favorites_count(self, obj):
         return obj.favorites.count()
+
     get_favorites_count.short_description = 'В избранном'
 
     def get_favorites_count_display(self, obj):
         return obj.favorites.count()
-    get_favorites_count_display.short_description = 'Количество добавлений в избранное'
+
+    get_favorites_count_display.short_description = (
+        'Количество добавлений в избранное'
+    )
 
     def display_tags(self, obj):
         return ", ".join([tag.name for tag in obj.tags.all()])
+
     display_tags.short_description = 'Теги'
 
 
@@ -67,7 +87,9 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_staff')
+    list_display = (
+        'id', 'username', 'email', 'first_name', 'last_name', 'is_staff'
+    )
     list_display_links = ('username',)
     search_fields = ('username', 'email', 'first_name', 'last_name')
     list_editable = ('is_staff',)

@@ -1,7 +1,7 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-from django.core.validators import RegexValidator
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
+from django.db import models
 
 
 class User(AbstractUser):
@@ -43,8 +43,6 @@ class User(AbstractUser):
 
 
 class Follow(models.Model):
-    """Модель подписок."""
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -66,4 +64,3 @@ class Follow(models.Model):
                 name='unique_user_author'
             )
         ]
-        # ordering = ['-created']
