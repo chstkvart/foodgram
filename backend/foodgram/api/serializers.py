@@ -430,8 +430,9 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def get_recipes(self, obj):
         request = self.context.get('request')
-        recipes_limit = request.query_params.get('recipes_limit'
-            ) if request else None
+        recipes_limit = (
+            request.query_params.get('recipes_limit') if request else None
+        )
         recipes = Recipe.objects.filter(author=obj.author).order_by('-id')
         if recipes_limit:
             try:
