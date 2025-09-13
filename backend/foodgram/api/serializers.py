@@ -302,8 +302,10 @@ class ShoppingCartDownloadSerializer(serializers.Serializer):
                 else:
                     ingredients_dict[key] = recipe_ingredient.amount
         shopping_list = []
-        for (ingredient_id, name, measurement_unit
-            ), amount in ingredients_dict.items():
+        for (
+            (ingredient_id, name, measurement_unit),
+            amount
+        ) in ingredients_dict.items():
             shopping_list.append({
                 'id': ingredient_id,
                 'name': name,
