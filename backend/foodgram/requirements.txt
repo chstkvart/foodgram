@@ -28,4 +28,4 @@ shortuuid==1.0.13
 social-auth-app-django==5.0.0
 social-auth-core==4.5.4
 uritemplate==4.1.1
-urllib3==2.5.0
+urllib3==2.2.3
