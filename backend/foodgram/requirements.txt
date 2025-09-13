@@ -1,4 +1,4 @@
-# isort:skip_file
+isort:skip_file
 certifi==2025.8.3
 cffi==1.17.1
 charset-normalizer==3.4.3
@@ -22,7 +22,7 @@ pyjwt==2.9.0
 pytz==2025.2
 pyyaml==6.0.2
 python3-openid==3.2.0
-python-dotenv==1.1.1
+python-dotenv==1.0.1
 requests==2.32.5
 requests-oauthlib==2.0.0
 shortuuid==1.0.13
