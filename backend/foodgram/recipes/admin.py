@@ -1,3 +1,4 @@
+# isort:skip_file
 from django.contrib import admin
 
 from recipes.models import (
