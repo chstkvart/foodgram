@@ -149,6 +149,14 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         source: "docker-compose.production.yml,.env"
         target: "foodgram"
+        script: |
+          echo "SSH connection successful!"
+          echo "Current user: $(whoami)"
+          echo "Current directory: $(pwd)"
+          echo "Creating foodgram directory..."
+          mkdir -p foodgram
+          echo "Directory created successfully"
+          ls -la
     - name: Deploy application
       uses: appleboy/ssh-action@master
       with:
