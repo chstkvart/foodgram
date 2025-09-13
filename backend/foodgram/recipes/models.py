@@ -98,7 +98,7 @@ class Recipe(models.Model):
         super().save(*args, **kwargs)
 
     def generate_short_hash(self):
-        return shortuuid.ShortUUID().random(length=7)    
+        return shortuuid.ShortUUID().random(length=7)
 
 
 class RecipeIngredients(models.Model):
