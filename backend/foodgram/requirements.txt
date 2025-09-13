@@ -1,3 +1,4 @@
+# isort:skip_file
 certifi==2025.8.3
 cffi==1.17.1
 charset-normalizer==3.4.3
@@ -14,7 +15,7 @@ idna==3.10
 inflection==0.5.1
 oauthlib==3.3.1
 packaging==25.0
-Pillow==11.3.0
+Pillow==10.4.0
 psycopg2-binary==2.9.9
 pycparser==2.22
 pyjwt==2.10.1
