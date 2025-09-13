@@ -40,11 +40,10 @@ class RecipeAdmin(admin.ModelAdmin):
         'get_favorites_count_display',
         'image',
         'text',
-        'ingredients',
         'tags',
         'cooking_time'
     ]
-    filter_horizontal = ['tags']
+    filter_horizontal = ['tags', 'ingredients']
 
     def get_favorites_count(self, obj):
         return obj.favorites.count()
