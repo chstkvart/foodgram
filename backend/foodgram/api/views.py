@@ -59,7 +59,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if request.method == 'GET':
             serializer = self.get_serializer(request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        if request.method == "PATCH":
+        if request.method == 'PATCH':
             serializer = self.get_serializer(
                 request.user,
                 data=request.data,
@@ -87,7 +87,7 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(
-                {"avatar": request.build_absolute_uri(
+                {'avatar': request.build_absolute_uri(
                     user.avatar.url) if user.avatar else None},
                 status=status.HTTP_200_OK
             )
@@ -119,8 +119,9 @@ class UserViewSet(viewsets.ModelViewSet):
         permission_classes=(permissions.IsAuthenticated,)
     )
     def subscriptions(self, request):
-        subscriptions = Follow.objects.filter(
-            user=request.user).select_related('author').order_by('id')
+        subscriptions = (
+            request.user.follower.select_related('author').order_by('id')
+        )
         page = self.paginate_queryset(subscriptions)
         serializer = FollowSerializer(
             page, many=True, context={'request': request}
@@ -139,10 +140,10 @@ class UserViewSet(viewsets.ModelViewSet):
         if request.method == 'POST':
             if user == author:
                 return Response(
-                    {"detail": 'Нельзя подписаться на себя'},
+                    {'detail': 'Нельзя подписаться на себя'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            if Follow.objects.filter(user=user, author=author).exists():
+            if user.follower.filter(author=author).exists():
                 return Response(
                     {'detail': 'Вы уже подписаны на этого пользователя'},
                     status=status.HTTP_400_BAD_REQUEST
@@ -154,7 +155,7 @@ class UserViewSet(viewsets.ModelViewSet):
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         if request.method == 'DELETE':
-            follow = Follow.objects.filter(user=user, author=author).first()
+            follow = user.follower.filter(author=author).first()
             if not follow:
                 return Response(
                     {'detail': 'Вы не подписаны на этого пользователя'},
@@ -269,7 +270,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe = self.get_object()
         user = request.user
         if request.method == 'POST':
-            if Favorite.objects.filter(user=user, recipe=recipe).exists():
+            if user.favorites.filter(recipe=recipe).exists():
                 return Response(
                     {'detail': 'Рецепт уже добавлен в избранное'},
                     status=status.HTTP_400_BAD_REQUEST
@@ -278,7 +279,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer = RecipeSerializer(recipe, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         elif request.method == 'DELETE':
-            favorite = Favorite.objects.filter(
+            favorite = user.favorites.filter(
                 user=user, recipe=recipe).first()
             if not favorite:
                 return Response(
