@@ -201,12 +201,17 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
     amount = serializers.IntegerField(
         validators=[
             MinValueValidator(MIN_AMOUNT),
             MaxValueValidator(MAX_AMOUNT)
         ]
     )
+
+    class Meta:
+        model = RecipeIngredients
+        fields = ('id', 'amount')
 
 
 class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
