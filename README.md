@@ -67,5 +67,5 @@ docker-compose exec backend python manage.py collectstatic --no-input
 
 ## Автор
 
-https://github.com/andos12
+https://github.com/chstkvart
 
